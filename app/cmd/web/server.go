@@ -11,6 +11,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/google/uuid"
 	"github.com/kensei18/enechain-technical-assignment/app/contexts"
+	"github.com/kensei18/enechain-technical-assignment/app/domain/storage"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web/resolver"
 	"gorm.io/driver/postgres"
@@ -41,8 +42,11 @@ func main() {
 	srv := handler.NewDefaultServer(web.NewExecutableSchema(web.Config{Resolvers: &resolver.Resolver{DB: db}}))
 	srv.AroundOperations(graphqlAuthHandler())
 
+	loaders := storage.NewLoaders(&storage.Reader{DB: db})
+	dataloadersHandler := dataloadersHandlerFunc(loaders)
+
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	http.Handle("/query", httpAuthHandler(srv))
+	http.Handle("/query", httpAuthHandler(dataloadersHandler(srv)))
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
@@ -79,5 +83,13 @@ func graphqlAuthHandler() graphql.OperationMiddleware {
 			panic(err)
 		}
 		return next(contexts.WithUserID(ctx, userID))
+	}
+}
+
+func dataloadersHandlerFunc(loaders *storage.Loaders) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			next.ServeHTTP(w, r.WithContext(storage.SetLoaders(r.Context(), loaders)))
+		})
 	}
 }
