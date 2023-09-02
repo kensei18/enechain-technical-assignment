@@ -1,0 +1,18 @@
+type Task {
+  id: ID!
+  title: String!
+  description: String!
+  status: TaskStatus!
+  isPrivate: Boolean!
+  createdAt: Time!
+  updatedAt: Time!
+
+  assignees: [User!]!
+  author: User!
+}
+
+enum TaskStatus {
+  Todo
+  OnGoing
+  Done
+}

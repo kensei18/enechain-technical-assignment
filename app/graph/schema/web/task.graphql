@@ -1,0 +1,33 @@
+input TaskInput {
+  title: String!
+  description: String!
+  status: TaskStatus!
+  isPrivate: Boolean!
+}
+
+input TaskUpdateInput {
+  id: ID!
+  title: String
+  description: String
+  status: TaskStatus
+  isPrivate: Boolean
+}
+
+type CreateTaskPayload {
+  tasks: [Task!]!
+}
+
+type UpdateTaskPayload {
+  tasks: [Task!]!
+}
+
+extend type Query {
+  getCompanyTasks: [Task!]!
+  getUserTasks: [Task!]!
+}
+
+extend type Mutation {
+  createTask(input: TaskInput!): CreateTaskPayload!
+  updateTask(input: TaskUpdateInput!): UpdateTaskPayload!
+  deleteTask(id: ID!): Boolean!
+}
