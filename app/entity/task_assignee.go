@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"gorm.io/gorm"
 )
 
 type TaskAssignee struct {
@@ -13,7 +12,6 @@ type TaskAssignee struct {
 	AssigneeID uuid.UUID `gorm:"not null"`
 	CreatedAt  time.Time `gorm:"not null"`
 	UpdatedAt  time.Time `gorm:"not null"`
-	DeletedAt  gorm.DeletedAt
 
 	Task     Task
 	Assignee User

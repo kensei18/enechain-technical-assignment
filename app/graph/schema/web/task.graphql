@@ -3,6 +3,7 @@ input TaskInput {
   description: String!
   status: TaskStatus!
   isPrivate: Boolean!
+  assigneeIds: [ID!]!
 }
 
 input TaskUpdateInput {
@@ -11,14 +12,15 @@ input TaskUpdateInput {
   description: String
   status: TaskStatus
   isPrivate: Boolean
+  assigneeIds: [ID!]
 }
 
 type CreateTaskPayload {
-  tasks: [Task!]!
+  task: Task!
 }
 
 type UpdateTaskPayload {
-  tasks: [Task!]!
+  task: Task!
 }
 
 extend type Query {

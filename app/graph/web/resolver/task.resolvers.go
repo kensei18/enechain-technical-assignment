@@ -8,23 +8,108 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/google/uuid"
+	"github.com/kensei18/enechain-technical-assignment/app/contexts"
+	"github.com/kensei18/enechain-technical-assignment/app/domain/repository"
+	"github.com/kensei18/enechain-technical-assignment/app/domain/service"
+	"github.com/kensei18/enechain-technical-assignment/app/entity"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/model"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web"
 )
 
 // CreateTask is the resolver for the createTask field.
 func (r *mutationResolver) CreateTask(ctx context.Context, input model.TaskInput) (*model.CreateTaskPayload, error) {
-	panic(fmt.Errorf("not implemented: CreateTask - createTask"))
+	userID, err := contexts.GetUserID(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	status, err := entity.ParseTaskStatus(string(input.Status))
+	if err != nil {
+		return nil, err
+	}
+
+	assigneeIDs := make([]uuid.UUID, 0, len(input.AssigneeIds))
+	for _, assigneeID := range input.AssigneeIds {
+		id, err := uuid.Parse(assigneeID)
+		if err != nil {
+			return nil, err
+		}
+		assigneeIDs = append(assigneeIDs, id)
+	}
+
+	taskService := service.NewTaskService(r.DB)
+	task, err := taskService.CreateTask(ctx, service.CreateTaskParams{
+		AuthorID:    userID,
+		Title:       input.Title,
+		Description: input.Description,
+		Status:      status,
+		IsPrivate:   input.IsPrivate,
+		AssigneeIDs: assigneeIDs,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.CreateTaskPayload{Task: model.NewTask(*task)}, nil
 }
 
 // UpdateTask is the resolver for the updateTask field.
 func (r *mutationResolver) UpdateTask(ctx context.Context, input model.TaskUpdateInput) (*model.UpdateTaskPayload, error) {
-	panic(fmt.Errorf("not implemented: UpdateTask - updateTask"))
+	taskID, err := uuid.Parse(input.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	var status *entity.TaskStatus
+	if input.Status != nil {
+		s, err := entity.ParseTaskStatus(string(*input.Status))
+		if err != nil {
+			return nil, err
+		}
+		status = &s
+	}
+
+	var assigneeIDs []uuid.UUID
+	if input.AssigneeIds != nil {
+		assigneeIDs = make([]uuid.UUID, 0, len(input.AssigneeIds))
+		for _, assigneeID := range input.AssigneeIds {
+			id, err := uuid.Parse(assigneeID)
+			if err != nil {
+				return nil, err
+			}
+			assigneeIDs = append(assigneeIDs, id)
+		}
+	}
+
+	taskService := service.NewTaskService(r.DB)
+	task, err := taskService.UpdateTask(ctx, repository.UpdateTaskParams{
+		TaskID:      taskID,
+		Title:       input.Title,
+		Description: input.Description,
+		Status:      status,
+		IsPrivate:   input.IsPrivate,
+		AssigneeIDs: assigneeIDs,
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.UpdateTaskPayload{Task: model.NewTask(*task)}, nil
 }
 
 // DeleteTask is the resolver for the deleteTask field.
 func (r *mutationResolver) DeleteTask(ctx context.Context, id string) (bool, error) {
-	panic(fmt.Errorf("not implemented: DeleteTask - deleteTask"))
+	taskID, err := uuid.Parse(id)
+	if err != nil {
+		return false, err
+	}
+	taskService := service.NewTaskService(r.DB)
+	err = taskService.DeleteTask(ctx, taskID)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // GetCompanyTasks is the resolver for the getCompanyTasks field.
@@ -35,6 +120,11 @@ func (r *queryResolver) GetCompanyTasks(ctx context.Context) ([]*model.Task, err
 // GetUserTasks is the resolver for the getUserTasks field.
 func (r *queryResolver) GetUserTasks(ctx context.Context) ([]*model.Task, error) {
 	panic(fmt.Errorf("not implemented: GetUserTasks - getUserTasks"))
+}
+
+// Company is the resolver for the company field.
+func (r *taskResolver) Company(ctx context.Context, obj *model.Task) (*model.Company, error) {
+	panic(fmt.Errorf("not implemented: Company - company"))
 }
 
 // Assignees is the resolver for the assignees field.

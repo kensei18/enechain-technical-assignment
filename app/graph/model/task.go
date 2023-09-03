@@ -5,6 +5,8 @@ import (
 	"io"
 	"strconv"
 	"time"
+
+	"github.com/kensei18/enechain-technical-assignment/app/entity"
 )
 
 type Task struct {
@@ -17,11 +19,24 @@ type Task struct {
 	UpdatedAt   time.Time  `json:"updatedAt"`
 }
 
+func NewTask(task entity.Task) *Task {
+	return &Task{
+		ID:          task.ID.String(),
+		Title:       task.Title,
+		Description: task.Description,
+		Status:      TaskStatus(task.Status),
+		IsPrivate:   task.IsPrivate,
+		CreatedAt:   task.CreatedAt,
+		UpdatedAt:   task.UpdatedAt,
+	}
+}
+
 type TaskInput struct {
 	Title       string     `json:"title"`
 	Description string     `json:"description"`
 	Status      TaskStatus `json:"status"`
 	IsPrivate   bool       `json:"isPrivate"`
+	AssigneeIds []string   `json:"assigneeIds"`
 }
 
 type TaskUpdateInput struct {
@@ -30,14 +45,15 @@ type TaskUpdateInput struct {
 	Description *string     `json:"description,omitempty"`
 	Status      *TaskStatus `json:"status,omitempty"`
 	IsPrivate   *bool       `json:"isPrivate,omitempty"`
+	AssigneeIds []string    `json:"assigneeIds,omitempty"`
 }
 
 type CreateTaskPayload struct {
-	Tasks []*Task `json:"tasks"`
+	Task *Task `json:"task"`
 }
 
 type UpdateTaskPayload struct {
-	Tasks []*Task `json:"tasks"`
+	Task *Task `json:"task"`
 }
 
 type TaskStatus string
