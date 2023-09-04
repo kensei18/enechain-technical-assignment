@@ -1,4 +1,4 @@
-package main
+package server
 
 import (
 	"context"
@@ -7,9 +7,6 @@ import (
 	"log"
 	"log/slog"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -17,18 +14,13 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/google/uuid"
 	"github.com/kensei18/enechain-technical-assignment/app/contexts"
-	"github.com/kensei18/enechain-technical-assignment/app/graph/web"
-	"github.com/kensei18/enechain-technical-assignment/app/graph/web/resolver"
 	"github.com/kensei18/enechain-technical-assignment/app/loggers"
 	"github.com/kensei18/enechain-technical-assignment/app/storage"
 	"github.com/vektah/gqlparser/v2/gqlerror"
-	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 const (
-	defaultPort = "8080"
-
 	userTokenKeyName = "userToken"
 
 	errorCodeUnauthorized        = "UNAUTHORIZED"
@@ -40,45 +32,23 @@ const (
 
 type userTokenKey string
 
-func main() {
-	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
+type GraphQLServer struct {
+	Port    string
+	Schema  graphql.ExecutableSchema
+	Logger  *loggers.RequestLogger
+	Loaders *storage.Loaders
+}
 
-	logger := loggers.NewDefaultLogger(os.Stdout, slog.LevelDebug)
-
-	db, err := gorm.Open(
-		postgres.Open("dbname=app host=localhost port=5432 user=postgres password=password sslmode=disable"),
-		&gorm.Config{Logger: loggers.NewGormLogger(logger)},
-	)
-	if err != nil {
-		slog.Error(err.Error())
-		return
-	}
-	defer func() {
-		sqlDB, err := db.DB()
-		if err != nil {
-			slog.Error(fmt.Sprintf("failed to close database connection: %v\n", err))
-		}
-		if err = sqlDB.Close(); err != nil {
-			slog.Error(fmt.Sprintf("failed to close database connection: %v\n", err))
-		}
-		slog.Info("database connection was closed")
-	}()
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
-
-	srv := handler.NewDefaultServer(web.NewExecutableSchema(web.Config{Resolvers: &resolver.Resolver{DB: db}}))
+func (s *GraphQLServer) Serve() {
+	srv := handler.NewDefaultServer(s.Schema)
 	srv.AroundOperations(func(ctx context.Context, next graphql.OperationHandler) graphql.ResponseHandler {
-		ctx = graphql.WithResponseContext(ctx, graphqlErrorPresenter(logger), graphql.DefaultRecover)
+		ctx = graphql.WithResponseContext(ctx, graphqlErrorPresenter(s.Logger), graphql.DefaultRecover)
 		return next(ctx)
 	})
-	srv.AroundOperations(graphqlLogHandler(logger))
+	srv.AroundOperations(graphqlLogHandler(s.Logger))
 	srv.AroundOperations(graphqlAuthHandler())
 
-	loaders := storage.NewLoaders(&storage.Reader{DB: db})
-	dataloadersHandler := dataloadersHandlerFunc(loaders)
+	dataloadersHandler := dataloadersHandlerFunc(s.Loaders)
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle(
@@ -86,14 +56,9 @@ func main() {
 		traceHandler(httpAuthHandler(dataloadersHandler(srv))),
 	)
 
-	go func() {
-		slog.Info(fmt.Sprintf("connect to http://localhost:%s/ for GraphQL playground", port))
-		log.Fatal(http.ListenAndServe(":"+port, nil))
-	}()
+	slog.Info(fmt.Sprintf("connect to http://localhost:%s/ for GraphQL playground", s.Port))
+	log.Fatal(http.ListenAndServe(":"+s.Port, nil))
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
 }
 
 func traceHandler(next http.Handler) http.Handler {

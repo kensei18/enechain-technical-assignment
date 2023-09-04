@@ -1,6 +1,9 @@
 generate_web:
 	gqlgen generate --config ./gqlgen.web.yml
 
+generate_admin:
+	gqlgen generate --config ./gqlgen.admin.yml
+
 generate_migration:
 	migrate create -ext sql -dir migration $(name)
 

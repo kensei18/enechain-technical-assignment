@@ -1,0 +1,35 @@
+input TaskInput {
+  AuthorId: ID!
+  title: String!
+  description: String!
+  status: TaskStatus!
+  isPrivate: Boolean!
+  assigneeIds: [ID!]!
+}
+
+input TaskUpdateInput {
+  id: ID!
+  title: String
+  description: String
+  status: TaskStatus
+  isPrivate: Boolean
+  assigneeIds: [ID!]
+}
+
+type CreateTaskPayload {
+  task: Task!
+}
+
+type UpdateTaskPayload {
+  task: Task!
+}
+
+extend type Query {
+  getTasks(companyId: ID!): [Task!]!
+}
+
+extend type Mutation {
+  createTask(input: TaskInput!): CreateTaskPayload!
+  updateTask(input: TaskUpdateInput!): UpdateTaskPayload!
+  deleteTask(id: ID!): Boolean!
+}
