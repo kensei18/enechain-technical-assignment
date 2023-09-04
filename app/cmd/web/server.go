@@ -11,9 +11,9 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/google/uuid"
 	"github.com/kensei18/enechain-technical-assignment/app/contexts"
-	"github.com/kensei18/enechain-technical-assignment/app/domain/storage"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web/resolver"
+	"github.com/kensei18/enechain-technical-assignment/app/storage"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

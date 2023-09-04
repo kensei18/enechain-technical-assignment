@@ -17,6 +17,9 @@ type Task struct {
 	IsPrivate   bool       `json:"isPrivate"`
 	CreatedAt   time.Time  `json:"createdAt"`
 	UpdatedAt   time.Time  `json:"updatedAt"`
+
+	CompanyID string
+	AuthorID  string
 }
 
 func NewTask(task entity.Task) *Task {
@@ -28,6 +31,8 @@ func NewTask(task entity.Task) *Task {
 		IsPrivate:   task.IsPrivate,
 		CreatedAt:   task.CreatedAt,
 		UpdatedAt:   task.UpdatedAt,
+		CompanyID:   task.CompanyID.String(),
+		AuthorID:    task.AuthorID.String(),
 	}
 }
 

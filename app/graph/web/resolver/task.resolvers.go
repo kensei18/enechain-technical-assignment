@@ -6,7 +6,6 @@ package resolver
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/google/uuid"
 	"github.com/kensei18/enechain-technical-assignment/app/contexts"
@@ -16,6 +15,7 @@ import (
 	"github.com/kensei18/enechain-technical-assignment/app/graph/model"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web"
 	"github.com/kensei18/enechain-technical-assignment/app/infrastructure"
+	"github.com/kensei18/enechain-technical-assignment/app/storage"
 )
 
 // CreateTask is the resolver for the createTask field.
@@ -149,17 +149,33 @@ func (r *queryResolver) GetUserTasks(ctx context.Context) ([]*model.Task, error)
 
 // Company is the resolver for the company field.
 func (r *taskResolver) Company(ctx context.Context, obj *model.Task) (*model.Company, error) {
-	panic(fmt.Errorf("not implemented: Company - company"))
+	company, err := storage.GetCompany(ctx, obj.CompanyID)
+	if err != nil {
+		return nil, err
+	}
+	return model.NewCompany(*company), nil
 }
 
 // Assignees is the resolver for the assignees field.
 func (r *taskResolver) Assignees(ctx context.Context, obj *model.Task) ([]*model.User, error) {
-	panic(fmt.Errorf("not implemented: Assignees - assignees"))
+	assignees, err := storage.GetAssigneesByTask(ctx, obj.ID)
+	if err != nil {
+		return nil, err
+	}
+	response := make([]*model.User, 0, len(assignees))
+	for _, assignee := range assignees {
+		response = append(response, model.NewUser(*assignee))
+	}
+	return response, nil
 }
 
 // Author is the resolver for the author field.
 func (r *taskResolver) Author(ctx context.Context, obj *model.Task) (*model.User, error) {
-	panic(fmt.Errorf("not implemented: Author - author"))
+	author, err := storage.GetUser(ctx, obj.AuthorID)
+	if err != nil {
+		return nil, err
+	}
+	return model.NewUser(*author), nil
 }
 
 // Task returns web.TaskResolver implementation.
