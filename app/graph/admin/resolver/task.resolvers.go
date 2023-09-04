@@ -38,7 +38,7 @@ func (r *mutationResolver) CreateTask(ctx context.Context, input model.TaskInput
 		assigneeIDs = append(assigneeIDs, id)
 	}
 
-	taskService := service.NewTaskService(r.DB)
+	taskService := service.NewTaskService(r.DB(ctx))
 	task, err := taskService.CreateTask(ctx, service.CreateTaskParams{
 		AuthorID:    authorID,
 		Title:       input.Title,
@@ -82,7 +82,7 @@ func (r *mutationResolver) UpdateTask(ctx context.Context, input model.TaskUpdat
 		}
 	}
 
-	taskService := service.NewTaskService(r.DB)
+	taskService := service.NewTaskService(r.DB(ctx))
 	task, err := taskService.UpdateTask(ctx, repository.UpdateTaskParams{
 		TaskID:      taskID,
 		Title:       input.Title,
@@ -104,7 +104,7 @@ func (r *mutationResolver) DeleteTask(ctx context.Context, id string) (bool, err
 	if err != nil {
 		return false, err
 	}
-	taskService := service.NewTaskService(r.DB)
+	taskService := service.NewTaskService(r.DB(ctx))
 	err = taskService.DeleteTask(ctx, taskID)
 	if err != nil {
 		return false, err
@@ -118,7 +118,7 @@ func (r *queryResolver) GetTasks(ctx context.Context, companyID string) ([]*mode
 	if err != nil {
 		return nil, err
 	}
-	taskRepository := infrastructure.NewTaskRepository(r.DB)
+	taskRepository := infrastructure.NewTaskRepository(r.DB(ctx))
 	tasks, err := taskRepository.GetCompanyTasks(ctx, cid)
 	if err != nil {
 		return nil, err

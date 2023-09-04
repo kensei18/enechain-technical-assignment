@@ -30,7 +30,7 @@ func (r *Reader) getUsers(ctx context.Context, keys []string) []*dataloader.Resu
 	output := make([]*dataloader.Result[*entity.User], len(keys))
 
 	users := make([]*entity.User, 0, len(keys))
-	if err := r.DB.Find(&users, "id IN ?", keys).Error; err != nil {
+	if err := r.DB(ctx).Find(&users, "id IN ?", keys).Error; err != nil {
 		for i := range keys {
 			output[i] = &dataloader.Result[*entity.User]{Error: err}
 		}
@@ -57,7 +57,7 @@ func (r *Reader) getAssigneesByTask(ctx context.Context, keys []string) []*datal
 	output := make([]*dataloader.Result[[]*entity.User], len(keys))
 
 	taskAssignees := make([]*entity.TaskAssignee, 0, len(keys))
-	if err := r.DB.Preload("Assignee").Where("task_id IN ?", keys).Find(&taskAssignees).Error; err != nil {
+	if err := r.DB(ctx).Preload("Assignee").Where("task_id IN ?", keys).Find(&taskAssignees).Error; err != nil {
 		for i := range keys {
 			output[i] = &dataloader.Result[[]*entity.User]{Error: err}
 		}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log/slog"
 	"os"
@@ -46,12 +47,15 @@ func main() {
 		}
 		slog.Info("database connection was closed")
 	}()
+	dbFunc := func(ctx context.Context) *gorm.DB { return db.WithContext(ctx) }
 
 	s := &server.GraphQLServer{
-		Port:    port,
-		Schema:  web.NewExecutableSchema(web.Config{Resolvers: &resolver.Resolver{DB: db}}),
+		Port: port,
+		Schema: web.NewExecutableSchema(
+			web.Config{Resolvers: &resolver.Resolver{DB: dbFunc}},
+		),
 		Logger:  loggers.NewDefaultLogger(os.Stdout, slog.LevelDebug),
-		Loaders: storage.NewLoaders(&storage.Reader{DB: db}),
+		Loaders: storage.NewLoaders(&storage.Reader{DB: dbFunc}),
 	}
 
 	go func() { s.Serve() }()

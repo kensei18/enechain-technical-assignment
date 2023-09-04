@@ -1,13 +1,15 @@
 package storage
 
 import (
+	"context"
+
 	"github.com/graph-gophers/dataloader/v7"
 	"github.com/kensei18/enechain-technical-assignment/app/entity"
 	"gorm.io/gorm"
 )
 
 type Reader struct {
-	DB *gorm.DB
+	DB func(context.Context) *gorm.DB
 }
 
 type Loaders struct {

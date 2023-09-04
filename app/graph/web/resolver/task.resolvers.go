@@ -39,7 +39,7 @@ func (r *mutationResolver) CreateTask(ctx context.Context, input model.TaskInput
 		assigneeIDs = append(assigneeIDs, id)
 	}
 
-	taskService := service.NewTaskService(r.DB)
+	taskService := service.NewTaskService(r.DB(ctx))
 	task, err := taskService.CreateTask(ctx, service.CreateTaskParams{
 		AuthorID:    userID,
 		Title:       input.Title,
@@ -83,7 +83,7 @@ func (r *mutationResolver) UpdateTask(ctx context.Context, input model.TaskUpdat
 		}
 	}
 
-	taskService := service.NewTaskService(r.DB)
+	taskService := service.NewTaskService(r.DB(ctx))
 	task, err := taskService.UpdateTask(ctx, repository.UpdateTaskParams{
 		TaskID:      taskID,
 		Title:       input.Title,
@@ -105,7 +105,7 @@ func (r *mutationResolver) DeleteTask(ctx context.Context, id string) (bool, err
 	if err != nil {
 		return false, err
 	}
-	taskService := service.NewTaskService(r.DB)
+	taskService := service.NewTaskService(r.DB(ctx))
 	err = taskService.DeleteTask(ctx, taskID)
 	if err != nil {
 		return false, err
@@ -119,7 +119,7 @@ func (r *queryResolver) GetCompanyTasks(ctx context.Context) ([]*model.Task, err
 	if err != nil {
 		return nil, err
 	}
-	tasks, err := service.NewTaskService(r.DB).GetUserCompanyTask(ctx, userID)
+	tasks, err := service.NewTaskService(r.DB(ctx)).GetUserCompanyTask(ctx, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -136,7 +136,7 @@ func (r *queryResolver) GetUserTasks(ctx context.Context) ([]*model.Task, error)
 	if err != nil {
 		return nil, err
 	}
-	tasks, err := infrastructure.NewTaskRepository(r.DB).GetUserPrivateTasks(ctx, userID)
+	tasks, err := infrastructure.NewTaskRepository(r.DB(ctx)).GetUserPrivateTasks(ctx, userID)
 	if err != nil {
 		return nil, err
 	}

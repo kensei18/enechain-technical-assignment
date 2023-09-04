@@ -21,7 +21,7 @@ func (r *Reader) getCompanies(ctx context.Context, keys []string) []*dataloader.
 	output := make([]*dataloader.Result[*entity.Company], len(keys))
 
 	companies := make([]*entity.Company, 0, len(keys))
-	if err := r.DB.Find(&companies, "id IN ?", keys).Error; err != nil {
+	if err := r.DB(ctx).Find(&companies, "id IN ?", keys).Error; err != nil {
 		for i := range keys {
 			output[i] = &dataloader.Result[*entity.Company]{Error: err}
 		}
