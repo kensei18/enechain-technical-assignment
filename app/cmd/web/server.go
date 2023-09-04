@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"log"
 	"log/slog"
 	"net/http"
@@ -17,6 +18,7 @@ import (
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web/resolver"
 	"github.com/kensei18/enechain-technical-assignment/app/loggers"
 	"github.com/kensei18/enechain-technical-assignment/app/storage"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -25,6 +27,12 @@ const (
 	defaultPort = "8080"
 
 	userTokenKeyName = "userToken"
+
+	errorCodeUnauthorized        = "UNAUTHORIZED"
+	errorCodeNotFound            = "NOT_FOUND"
+	errorCodeDuplicatedKey       = "DUPLICATED_KEY"
+	errorCodeInvalidInputField   = "INVALID_INPUT_FIELD"
+	errorCodeInternalServerError = "INTERNAL_SERVER_ERROR"
 )
 
 type userTokenKey string
@@ -47,7 +55,7 @@ func main() {
 
 	srv := handler.NewDefaultServer(web.NewExecutableSchema(web.Config{Resolvers: &resolver.Resolver{DB: db}}))
 	srv.AroundOperations(func(ctx context.Context, next graphql.OperationHandler) graphql.ResponseHandler {
-		ctx = graphql.WithResponseContext(ctx, graphql.DefaultErrorPresenter, graphql.DefaultRecover)
+		ctx = graphql.WithResponseContext(ctx, graphqlErrorPresenter(logger), graphql.DefaultRecover)
 		return next(ctx)
 	})
 	srv.AroundOperations(graphqlLogHandler(logger))
@@ -127,7 +135,9 @@ func graphqlAuthHandler() graphql.OperationMiddleware {
 		// TODO: verify token
 		userID, err := uuid.Parse(token)
 		if err != nil {
-			panic(err)
+			return func(ctx context.Context) *graphql.Response {
+				return &graphql.Response{Errors: gqlerror.List{errorGraphqlUnauthorized()}}
+			}
 		}
 		return next(contexts.WithUserID(ctx, userID))
 	}
@@ -139,4 +149,40 @@ func dataloadersHandlerFunc(loaders *storage.Loaders) func(http.Handler) http.Ha
 			next.ServeHTTP(w, r.WithContext(storage.SetLoaders(r.Context(), loaders)))
 		})
 	}
+}
+
+func graphqlErrorPresenter(logger *loggers.RequestLogger) graphql.ErrorPresenterFunc {
+	return func(ctx context.Context, err error) *gqlerror.Error {
+		var gqlErr *gqlerror.Error
+		var orig error
+		var code string
+		if x, ok := err.(*gqlerror.Error); ok {
+			gqlErr = x
+			orig = errors.Unwrap(x)
+		} else {
+			gqlErr = graphql.DefaultErrorPresenter(ctx, err)
+			orig = err
+		}
+		gqlErr.Extensions = map[string]interface{}{}
+		switch true {
+		case errors.Is(orig, gorm.ErrRecordNotFound):
+			code = errorCodeNotFound
+		case errors.Is(orig, gorm.ErrDuplicatedKey):
+			code = errorCodeDuplicatedKey
+		case errors.Is(orig, gorm.ErrInvalidField):
+			code = errorCodeInvalidInputField
+		default:
+			code = errorCodeInternalServerError
+			logger.Error(ctx, gqlErr.Message, slog.String("code", code))
+		}
+		gqlErr.Extensions["code"] = code
+		return gqlErr
+	}
+}
+
+func errorGraphqlUnauthorized() *gqlerror.Error {
+	err := gqlerror.Wrap(errors.New("unauthorized"))
+	err.Extensions = map[string]interface{}{}
+	err.Extensions["code"] = errorCodeUnauthorized
+	return err
 }
