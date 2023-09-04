@@ -15,6 +15,7 @@ import (
 	"github.com/kensei18/enechain-technical-assignment/app/entity"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/model"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web"
+	"github.com/kensei18/enechain-technical-assignment/app/infrastructure"
 )
 
 // CreateTask is the resolver for the createTask field.
@@ -114,12 +115,36 @@ func (r *mutationResolver) DeleteTask(ctx context.Context, id string) (bool, err
 
 // GetCompanyTasks is the resolver for the getCompanyTasks field.
 func (r *queryResolver) GetCompanyTasks(ctx context.Context) ([]*model.Task, error) {
-	panic(fmt.Errorf("not implemented: GetCompanyTasks - getCompanyTasks"))
+	userID, err := contexts.GetUserID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	tasks, err := service.NewTaskService(r.DB).GetUserCompanyTask(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	response := make([]*model.Task, 0, len(tasks))
+	for _, task := range tasks {
+		response = append(response, model.NewTask(*task))
+	}
+	return response, nil
 }
 
 // GetUserTasks is the resolver for the getUserTasks field.
 func (r *queryResolver) GetUserTasks(ctx context.Context) ([]*model.Task, error) {
-	panic(fmt.Errorf("not implemented: GetUserTasks - getUserTasks"))
+	userID, err := contexts.GetUserID(ctx)
+	if err != nil {
+		return nil, err
+	}
+	tasks, err := infrastructure.NewTaskRepository(r.DB).GetUserPrivateTasks(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	response := make([]*model.Task, 0, len(tasks))
+	for _, task := range tasks {
+		response = append(response, model.NewTask(*task))
+	}
+	return response, nil
 }
 
 // Company is the resolver for the company field.

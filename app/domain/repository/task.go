@@ -11,6 +11,8 @@ type TaskRepository interface {
 	Create(ctx context.Context, params CreateTaskParams) (*entity.Task, error)
 	Update(ctx context.Context, params UpdateTaskParams) (*entity.Task, error)
 	Delete(ctx context.Context, id uuid.UUID) error
+	GetCompanyPublicTasks(ctx context.Context, companyID uuid.UUID) ([]*entity.Task, error)
+	GetUserPrivateTasks(ctx context.Context, userID uuid.UUID) ([]*entity.Task, error)
 }
 
 type CreateTaskParams struct {

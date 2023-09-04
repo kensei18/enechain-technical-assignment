@@ -73,3 +73,11 @@ func (s *taskService) DeleteTask(ctx context.Context, taskID uuid.UUID) error {
 		return taskRepository.Delete(ctx, taskID)
 	})
 }
+
+func (s *taskService) GetUserCompanyTask(ctx context.Context, userID uuid.UUID) ([]*entity.Task, error) {
+	user, err := infrastructure.NewUserRepository(s.DB).FindByID(ctx, userID)
+	if err != nil {
+		return nil, err
+	}
+	return infrastructure.NewTaskRepository(s.DB).GetCompanyPublicTasks(ctx, user.CompanyID)
+}

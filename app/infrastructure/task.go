@@ -78,3 +78,17 @@ func (r *taskRepository) Update(ctx context.Context, params repository.UpdateTas
 func (r *taskRepository) Delete(ctx context.Context, id uuid.UUID) error {
 	return r.conn.Delete(&entity.Task{}, id).Error
 }
+
+func (r *taskRepository) GetCompanyPublicTasks(ctx context.Context, companyID uuid.UUID) (
+	[]*entity.Task, error,
+) {
+	var tasks []*entity.Task
+	err := r.conn.Where("company_id = ? AND is_private = ?", companyID, false).Find(&tasks).Error
+	return tasks, err
+}
+
+func (r *taskRepository) GetUserPrivateTasks(ctx context.Context, userID uuid.UUID) ([]*entity.Task, error) {
+	var tasks []*entity.Task
+	err := r.conn.Where("author_id = ? AND is_private = ?", userID, true).Find(&tasks).Error
+	return tasks, err
+}
