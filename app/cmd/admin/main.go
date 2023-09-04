@@ -30,7 +30,13 @@ func main() {
 	}
 
 	db, err := gorm.Open(
-		postgres.Open("dbname=app host=localhost port=5432 user=postgres password=password sslmode=disable"),
+		postgres.Open(fmt.Sprintf(
+			"dbname=app host=%s port=%s user=%s password=%s sslmode=disable",
+			os.Getenv("DB_HOST"),
+			os.Getenv("DB_PORT"),
+			os.Getenv("DB_USERNAME"),
+			os.Getenv("DB_PASSWORD"),
+		)),
 		&gorm.Config{Logger: loggers.NewGormLogger(logger)},
 	)
 	if err != nil {
