@@ -6,15 +6,19 @@ package resolver
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/kensei18/enechain-technical-assignment/app/graph/admin"
-	"github.com/kensei18/enechain-technical-assignment/app/graph/model"
+	"github.com/kensei18/enechain-technical-assignment/app/graph/admin/model"
+	"github.com/kensei18/enechain-technical-assignment/app/storage"
 )
 
 // Company is the resolver for the company field.
 func (r *userResolver) Company(ctx context.Context, obj *model.User) (*model.Company, error) {
-	panic(fmt.Errorf("not implemented: Company - company"))
+	company, err := storage.GetCompany(ctx, obj.CompanyID)
+	if err != nil {
+		return nil, err
+	}
+	return model.NewCompany(*company), nil
 }
 
 // User returns admin.UserResolver implementation.

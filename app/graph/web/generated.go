@@ -14,7 +14,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/kensei18/enechain-technical-assignment/app/graph/model"
+	"github.com/kensei18/enechain-technical-assignment/app/graph/web/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )
@@ -485,7 +485,7 @@ func (ec *executionContext) field_Mutation_createTask_args(ctx context.Context, 
 	var arg0 model.TaskInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNTaskInput2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskInput(ctx, tmp)
+		arg0, err = ec.unmarshalNTaskInput2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -515,7 +515,7 @@ func (ec *executionContext) field_Mutation_updateTask_args(ctx context.Context, 
 	var arg0 model.TaskUpdateInput
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
-		arg0, err = ec.unmarshalNTaskUpdateInput2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskUpdateInput(ctx, tmp)
+		arg0, err = ec.unmarshalNTaskUpdateInput2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskUpdateInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -693,7 +693,7 @@ func (ec *executionContext) _CreateTaskPayload_task(ctx context.Context, field g
 	}
 	res := resTmp.(*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTask(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTask(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_CreateTaskPayload_task(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -759,7 +759,7 @@ func (ec *executionContext) _Mutation_createTask(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.CreateTaskPayload)
 	fc.Result = res
-	return ec.marshalNCreateTaskPayload2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐCreateTaskPayload(ctx, field.Selections, res)
+	return ec.marshalNCreateTaskPayload2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐCreateTaskPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_createTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -818,7 +818,7 @@ func (ec *executionContext) _Mutation_updateTask(ctx context.Context, field grap
 	}
 	res := resTmp.(*model.UpdateTaskPayload)
 	fc.Result = res
-	return ec.marshalNUpdateTaskPayload2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUpdateTaskPayload(ctx, field.Selections, res)
+	return ec.marshalNUpdateTaskPayload2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUpdateTaskPayload(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Mutation_updateTask(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -932,7 +932,7 @@ func (ec *executionContext) _Query_getCompanyTasks(ctx context.Context, field gr
 	}
 	res := resTmp.([]*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_getCompanyTasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -998,7 +998,7 @@ func (ec *executionContext) _Query_getUserTasks(ctx context.Context, field graph
 	}
 	res := resTmp.([]*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Query_getUserTasks(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1325,7 +1325,7 @@ func (ec *executionContext) _Task_status(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(model.TaskStatus)
 	fc.Result = res
-	return ec.marshalNTaskStatus2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskStatus(ctx, field.Selections, res)
+	return ec.marshalNTaskStatus2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Task_status(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1501,7 +1501,7 @@ func (ec *executionContext) _Task_company(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.(*model.Company)
 	fc.Result = res
-	return ec.marshalNCompany2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐCompany(ctx, field.Selections, res)
+	return ec.marshalNCompany2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Task_company(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1551,7 +1551,7 @@ func (ec *executionContext) _Task_assignees(ctx context.Context, field graphql.C
 	}
 	res := resTmp.([]*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUserᚄ(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUserᚄ(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Task_assignees(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1603,7 +1603,7 @@ func (ec *executionContext) _Task_author(ctx context.Context, field graphql.Coll
 	}
 	res := resTmp.(*model.User)
 	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+	return ec.marshalNUser2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_Task_author(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1655,7 +1655,7 @@ func (ec *executionContext) _UpdateTaskPayload_task(ctx context.Context, field g
 	}
 	res := resTmp.(*model.Task)
 	fc.Result = res
-	return ec.marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTask(ctx, field.Selections, res)
+	return ec.marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTask(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_UpdateTaskPayload_task(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -1809,7 +1809,7 @@ func (ec *executionContext) _User_company(ctx context.Context, field graphql.Col
 	}
 	res := resTmp.(*model.Company)
 	fc.Result = res
-	return ec.marshalNCompany2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐCompany(ctx, field.Selections, res)
+	return ec.marshalNCompany2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐCompany(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) fieldContext_User_company(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
@@ -3640,7 +3640,7 @@ func (ec *executionContext) unmarshalInputTaskInput(ctx context.Context, obj int
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalNTaskStatus2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskStatus(ctx, v)
+			data, err := ec.unmarshalNTaskStatus2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -3714,7 +3714,7 @@ func (ec *executionContext) unmarshalInputTaskUpdateInput(ctx context.Context, o
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-			data, err := ec.unmarshalOTaskStatus2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskStatus(ctx, v)
+			data, err := ec.unmarshalOTaskStatus2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskStatus(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4628,11 +4628,11 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 	return res
 }
 
-func (ec *executionContext) marshalNCompany2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐCompany(ctx context.Context, sel ast.SelectionSet, v model.Company) graphql.Marshaler {
+func (ec *executionContext) marshalNCompany2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐCompany(ctx context.Context, sel ast.SelectionSet, v model.Company) graphql.Marshaler {
 	return ec._Company(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCompany2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐCompany(ctx context.Context, sel ast.SelectionSet, v *model.Company) graphql.Marshaler {
+func (ec *executionContext) marshalNCompany2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐCompany(ctx context.Context, sel ast.SelectionSet, v *model.Company) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4642,11 +4642,11 @@ func (ec *executionContext) marshalNCompany2ᚖgithubᚗcomᚋkensei18ᚋenechai
 	return ec._Company(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNCreateTaskPayload2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐCreateTaskPayload(ctx context.Context, sel ast.SelectionSet, v model.CreateTaskPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNCreateTaskPayload2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐCreateTaskPayload(ctx context.Context, sel ast.SelectionSet, v model.CreateTaskPayload) graphql.Marshaler {
 	return ec._CreateTaskPayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNCreateTaskPayload2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐCreateTaskPayload(ctx context.Context, sel ast.SelectionSet, v *model.CreateTaskPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNCreateTaskPayload2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐCreateTaskPayload(ctx context.Context, sel ast.SelectionSet, v *model.CreateTaskPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4718,7 +4718,7 @@ func (ec *executionContext) marshalNString2string(ctx context.Context, sel ast.S
 	return res
 }
 
-func (ec *executionContext) marshalNTask2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Task) graphql.Marshaler {
+func (ec *executionContext) marshalNTask2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.Task) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4742,7 +4742,7 @@ func (ec *executionContext) marshalNTask2ᚕᚖgithubᚗcomᚋkensei18ᚋenechai
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTask(ctx, sel, v[i])
+			ret[i] = ec.marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTask(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4762,7 +4762,7 @@ func (ec *executionContext) marshalNTask2ᚕᚖgithubᚗcomᚋkensei18ᚋenechai
 	return ret
 }
 
-func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v *model.Task) graphql.Marshaler {
+func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTask(ctx context.Context, sel ast.SelectionSet, v *model.Task) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4772,22 +4772,22 @@ func (ec *executionContext) marshalNTask2ᚖgithubᚗcomᚋkensei18ᚋenechain�
 	return ec._Task(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalNTaskInput2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskInput(ctx context.Context, v interface{}) (model.TaskInput, error) {
+func (ec *executionContext) unmarshalNTaskInput2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskInput(ctx context.Context, v interface{}) (model.TaskInput, error) {
 	res, err := ec.unmarshalInputTaskInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) unmarshalNTaskStatus2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskStatus(ctx context.Context, v interface{}) (model.TaskStatus, error) {
+func (ec *executionContext) unmarshalNTaskStatus2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskStatus(ctx context.Context, v interface{}) (model.TaskStatus, error) {
 	var res model.TaskStatus
 	err := res.UnmarshalGQL(v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalNTaskStatus2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskStatus(ctx context.Context, sel ast.SelectionSet, v model.TaskStatus) graphql.Marshaler {
+func (ec *executionContext) marshalNTaskStatus2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskStatus(ctx context.Context, sel ast.SelectionSet, v model.TaskStatus) graphql.Marshaler {
 	return v
 }
 
-func (ec *executionContext) unmarshalNTaskUpdateInput2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskUpdateInput(ctx context.Context, v interface{}) (model.TaskUpdateInput, error) {
+func (ec *executionContext) unmarshalNTaskUpdateInput2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskUpdateInput(ctx context.Context, v interface{}) (model.TaskUpdateInput, error) {
 	res, err := ec.unmarshalInputTaskUpdateInput(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
@@ -4807,11 +4807,11 @@ func (ec *executionContext) marshalNTime2timeᚐTime(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) marshalNUpdateTaskPayload2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUpdateTaskPayload(ctx context.Context, sel ast.SelectionSet, v model.UpdateTaskPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNUpdateTaskPayload2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUpdateTaskPayload(ctx context.Context, sel ast.SelectionSet, v model.UpdateTaskPayload) graphql.Marshaler {
 	return ec._UpdateTaskPayload(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUpdateTaskPayload2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUpdateTaskPayload(ctx context.Context, sel ast.SelectionSet, v *model.UpdateTaskPayload) graphql.Marshaler {
+func (ec *executionContext) marshalNUpdateTaskPayload2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUpdateTaskPayload(ctx context.Context, sel ast.SelectionSet, v *model.UpdateTaskPayload) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -4821,11 +4821,11 @@ func (ec *executionContext) marshalNUpdateTaskPayload2ᚖgithubᚗcomᚋkensei18
 	return ec._UpdateTaskPayload(ctx, sel, v)
 }
 
-func (ec *executionContext) marshalNUser2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2githubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v model.User) graphql.Marshaler {
 	return ec._User(ctx, sel, &v)
 }
 
-func (ec *executionContext) marshalNUser2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚕᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUserᚄ(ctx context.Context, sel ast.SelectionSet, v []*model.User) graphql.Marshaler {
 	ret := make(graphql.Array, len(v))
 	var wg sync.WaitGroup
 	isLen1 := len(v) == 1
@@ -4849,7 +4849,7 @@ func (ec *executionContext) marshalNUser2ᚕᚖgithubᚗcomᚋkensei18ᚋenechai
 			if !isLen1 {
 				defer wg.Done()
 			}
-			ret[i] = ec.marshalNUser2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUser(ctx, sel, v[i])
+			ret[i] = ec.marshalNUser2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUser(ctx, sel, v[i])
 		}
 		if isLen1 {
 			f(i)
@@ -4869,7 +4869,7 @@ func (ec *executionContext) marshalNUser2ᚕᚖgithubᚗcomᚋkensei18ᚋenechai
 	return ret
 }
 
-func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
+func (ec *executionContext) marshalNUser2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐUser(ctx context.Context, sel ast.SelectionSet, v *model.User) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
 			ec.Errorf(ctx, "the requested element is null which the schema does not allow")
@@ -5212,7 +5212,7 @@ func (ec *executionContext) marshalOString2ᚖstring(ctx context.Context, sel as
 	return res
 }
 
-func (ec *executionContext) unmarshalOTaskStatus2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskStatus(ctx context.Context, v interface{}) (*model.TaskStatus, error) {
+func (ec *executionContext) unmarshalOTaskStatus2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskStatus(ctx context.Context, v interface{}) (*model.TaskStatus, error) {
 	if v == nil {
 		return nil, nil
 	}
@@ -5221,7 +5221,7 @@ func (ec *executionContext) unmarshalOTaskStatus2ᚖgithubᚗcomᚋkensei18ᚋen
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
-func (ec *executionContext) marshalOTaskStatus2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋmodelᚐTaskStatus(ctx context.Context, sel ast.SelectionSet, v *model.TaskStatus) graphql.Marshaler {
+func (ec *executionContext) marshalOTaskStatus2ᚖgithubᚗcomᚋkensei18ᚋenechainᚑtechnicalᚑassignmentᚋappᚋgraphᚋwebᚋmodelᚐTaskStatus(ctx context.Context, sel ast.SelectionSet, v *model.TaskStatus) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
 	}

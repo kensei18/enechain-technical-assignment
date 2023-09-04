@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/kensei18/enechain-technical-assignment/app/graph/web"
-	"github.com/kensei18/enechain-technical-assignment/app/graph/web/resolver"
+	"github.com/kensei18/enechain-technical-assignment/app/graph/admin"
+	"github.com/kensei18/enechain-technical-assignment/app/graph/admin/resolver"
 	"github.com/kensei18/enechain-technical-assignment/app/loggers"
 	"github.com/kensei18/enechain-technical-assignment/app/server"
 	"github.com/kensei18/enechain-technical-assignment/app/storage"
@@ -49,7 +49,7 @@ func main() {
 
 	s := &server.GraphQLServer{
 		Port:    port,
-		Schema:  web.NewExecutableSchema(web.Config{Resolvers: &resolver.Resolver{DB: db}}),
+		Schema:  admin.NewExecutableSchema(admin.Config{Resolvers: &resolver.Resolver{DB: db}}),
 		Logger:  loggers.NewDefaultLogger(os.Stdout, slog.LevelDebug),
 		Loaders: storage.NewLoaders(&storage.Reader{DB: db}),
 	}

@@ -12,8 +12,8 @@ import (
 	"github.com/kensei18/enechain-technical-assignment/app/domain/repository"
 	"github.com/kensei18/enechain-technical-assignment/app/domain/service"
 	"github.com/kensei18/enechain-technical-assignment/app/entity"
-	"github.com/kensei18/enechain-technical-assignment/app/graph/model"
 	"github.com/kensei18/enechain-technical-assignment/app/graph/web"
+	"github.com/kensei18/enechain-technical-assignment/app/graph/web/model"
 	"github.com/kensei18/enechain-technical-assignment/app/infrastructure"
 	"github.com/kensei18/enechain-technical-assignment/app/storage"
 )

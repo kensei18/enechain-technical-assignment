@@ -92,3 +92,9 @@ func (r *taskRepository) GetUserPrivateTasks(ctx context.Context, userID uuid.UU
 	err := r.conn.Where("author_id = ? AND is_private = ?", userID, true).Find(&tasks).Error
 	return tasks, err
 }
+
+func (r *taskRepository) GetCompanyTasks(ctx context.Context, companyID uuid.UUID) ([]*entity.Task, error) {
+	var tasks []*entity.Task
+	err := r.conn.Where("company_id = ?", companyID).Find(&tasks).Error
+	return tasks, err
+}
