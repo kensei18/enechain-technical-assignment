@@ -3,10 +3,13 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"log/slog"
 	"net/http"
 	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/99designs/gqlgen/graphql"
@@ -38,6 +41,8 @@ const (
 type userTokenKey string
 
 func main() {
+	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
+
 	logger := loggers.NewDefaultLogger(os.Stdout, slog.LevelDebug)
 
 	db, err := gorm.Open(
@@ -45,8 +50,19 @@ func main() {
 		&gorm.Config{Logger: loggers.NewGormLogger(logger)},
 	)
 	if err != nil {
-		panic(err)
+		slog.Error(err.Error())
+		return
 	}
+	defer func() {
+		sqlDB, err := db.DB()
+		if err != nil {
+			slog.Error(fmt.Sprintf("failed to close database connection: %v\n", err))
+		}
+		if err = sqlDB.Close(); err != nil {
+			slog.Error(fmt.Sprintf("failed to close database connection: %v\n", err))
+		}
+		slog.Info("database connection was closed")
+	}()
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -70,8 +86,14 @@ func main() {
 		traceHandler(httpAuthHandler(dataloadersHandler(srv))),
 	)
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	go func() {
+		slog.Info(fmt.Sprintf("connect to http://localhost:%s/ for GraphQL playground", port))
+		log.Fatal(http.ListenAndServe(":"+port, nil))
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
 }
 
 func traceHandler(next http.Handler) http.Handler {
